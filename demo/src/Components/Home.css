@@ -93,13 +93,11 @@ section{
     font-size: 3.0rem;
     font-weight: 900;
     margin: 15px 0px;
-    animation: textslide 1s ease;
 }
 
 .main-content p{
     width: 100%;
     max-width: 620px;
-    /* font-family: "Roboto", serif; */
     font-size: 1.0rem;
     line-height: 32px;
     margin-bottom: 40px;
@@ -108,7 +106,7 @@ section{
 .content-img img{
     width: 450px;
     height: 450px;
-    animation: SlideIn 1s ease-in-out;
+   padding-left: 50px;
 
 }
 
@@ -132,4 +130,33 @@ section{
     color: violet;
 }
 
+.mid{
+    display: flex;
+    margin-top: 175px;
+    margin-bottom: 100px;
+    justify-content: space-around;
+}
 
+.mid img{
+    margin-top: -50px;  
+    width: 450px;
+    height: 450px;
+    
+    
+}
+
+.lg{
+    align-self: center;
+}
+
+/* 
+@keyframes zoomInRight {
+    0% {
+        transform: scale(0.5) translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1) translateX(0);
+        opacity: 1;
+    }
+} */
