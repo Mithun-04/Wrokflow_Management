@@ -8,7 +8,11 @@
     padding: 30px 40px;
     padding-bottom: 50px;
     border-radius: 10px;
-    height: 275px;
+    height: 330px;
+}
+
+.wrapper1.signup{
+    height: 400px;
 }
 
 
@@ -61,5 +65,25 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
     cursor: pointer;
     font-weight: 700;
+}
+
+.new{
+    display: flex;
+    position: relative;
+    margin-top: 10px;
+    justify-content: space-evenly;
+    align-items: center;
+    color: #ffffff;
+}
+
+.new  button {  
+    background: none;
+    border: none;
+    color: violet;
+    cursor: pointer;
+    text-decoration: underline;
+    width: max-content;
     
 }
+
+
