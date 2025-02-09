@@ -134,9 +134,13 @@ section{
 
 .mid{
     display: flex;
-    margin-top: 175px;
+    margin-top: 230px;
     margin-bottom: 100px;
     justify-content: space-around;
+}
+
+.mid .signupp{
+    margin-top: 270px;
 }
 
 .mid img{
