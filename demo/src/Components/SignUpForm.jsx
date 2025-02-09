@@ -1,26 +1,29 @@
 import React from "react";
-import { FaUser, FaLock } from "react-icons/fa";
-import "./LoginForm.css"
+import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 
-const LoginForm = ({ toggleForm }) => {
+const SignUpForm = ({ toggleForm }) => {
     return (
-        <div className="wrapper1 login" data-aos="fade-up-left" data-aos-duration="1400">
+        <div className="wrapper1 signup" data-aos="fade-up-left" data-aos-duration="1400">
             <form>
-                <h1>Login</h1>
+                <h1>Sign Up</h1>
                 <div className="input-box">
                     <input type="text" placeholder="Username" />
                     <FaUser className="icon" />
                 </div>
                 <div className="input-box">
+                    <input type="email" placeholder="Email" />
+                    <FaEnvelope className="icon" />
+                </div>
+                <div className="input-box">
                     <input type="password" placeholder="Password" />
                     <FaLock className="icon" />
                 </div>
-                <button>Log In Now</button>
+                <button>Create Account</button>
                 <div className="new">
-                    <p>Don't have an account yet?</p>
+                    <p>Already have an account?</p>
                     <p>-</p>
                     <button type="button" onClick={toggleForm} className="toggle-link">
-                        Sign Up
+                        Login Here
                     </button>
                 </div>
             </form>
@@ -28,4 +31,4 @@ const LoginForm = ({ toggleForm }) => {
     );
 };
 
-export default LoginForm;
+export default SignUpForm;
