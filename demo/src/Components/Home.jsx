@@ -1,50 +1,19 @@
-import React, { useRef, useState } from 'react';
-import "./Home.css";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import titleImage from '../assets/Title.png.png';
-import side_img from '../assets/cont-img.png';
-import person from '../assets/person2.png';
-import { IoMenu } from "react-icons/io5";
-import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
-import LoginForm from './LoginForm';
-import SignUpForm from './SignUpForm';
-
-AOS.init({
-  duration: 1400,
-  once: false,
-});
+import React, { useContext, useRef } from 'react'; // Added useContext
+import './Home.css'; // Import CSS for this component
+import 'aos/dist/aos.css'; // AOS CSS
+import side_img from '../assets/cont-img.png'; // Path to the side image
+import person from '../assets/person2.png'; // Path to the person image
+import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa"; // Social icons
+import LoginForm from './LoginForm'; // Login form component
+import SignUpForm from './SignUpForm'; // Sign-up form component
+import { LoginContext } from "../context/LoginContext"; // Import the LoginContext
 
 const Home = () => {
+  const { isLogin, toggleForm } = useContext(LoginContext); // Use LoginContext to get isLogin and toggleForm
   const nextSectionRef = useRef(null);
-  const [isLogin, setIsLogin] = useState(true); // Shared state for toggling
-
-  const toggleForm = () => {
-    setIsLogin((prev) => !prev); // Toggles between Login and SignUp
-    if (nextSectionRef.current) {
-      nextSectionRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <div className='main'>
-      {/* Navbar Section */}
-      <div className='wrapper'>
-        <img src={titleImage} alt="Logo" className='logo' />
-        <ul className='nav-list'>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Membership</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-        <div className="right-content">
-          <button className='nav-btn' onClick={toggleForm}>
-            {isLogin ? "Sign Up" : "Back to Login"}
-          </button>
-          <IoMenu className='menu-icon' />
-        </div>
-      </div>
-
       {/* Hero Section */}
       <section className='content'>
         <div className="main-content">
@@ -77,11 +46,15 @@ const Home = () => {
         <div>
           <img src={person} alt="Person" className='person' data-aos="zoom-in-right" data-aos-duration="1400" />
         </div>
-        {isLogin ? (
-          <LoginForm toggleForm={toggleForm} />
-        ) : (
-          <SignUpForm toggleForm={toggleForm} />
-        )}
+
+        {/* Conditional Rendering of Forms */}
+        <div className="form-container" data-aos="fade-up" data-aos-duration="1400">
+          {isLogin ? (
+            <LoginForm toggleForm={toggleForm}/>
+          ) : (
+            <SignUpForm toggleForm={toggleForm}/>
+          )}
+        </div>
       </div>
     </div>
   );
