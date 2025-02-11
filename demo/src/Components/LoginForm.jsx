@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { supabase } from "./supabaseClient";
-import "./LoginForm.css";
+import "../styles/LoginForm.css";
 
 const LoginForm = ({ toggleForm }) => {
     const [email, setEmail] = useState(""); 

@@ -4,10 +4,11 @@ import { LoginProvider } from "./context/LoginContext"; // Import the LoginProvi
 import Home from "./Components/Home.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import "./Components/Home.css";
+import "./styles/Home.css";
 import RootLayout from "./layouts/RootLayout.jsx";
 import About from "./Components/About.jsx";
 import Contact from "./Components/ContactUs.jsx";
+import Dashboard from "./Components/DashBoard.jsx";
 
 const App = () => {
   useEffect(() => {
@@ -16,11 +17,14 @@ const App = () => {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<RootLayout />}>
-        <Route index element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path = "contact"element={<Contact />} />
-      </Route>
+      <>
+        <Route path="/" element={<RootLayout />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
+        </Route>
+        <Route path="/dashboard" element={<Dashboard />} />
+      </>
     )
   );
 
