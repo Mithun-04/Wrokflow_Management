@@ -1,15 +1,34 @@
-import React from 'react'
-import Home from './Components/Home.jsx'
-import 'aos/dist/aos.css';
-import AOS from 'aos';
-import { useEffect } from 'react';
+import React, { useEffect } from "react";
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
+import { LoginProvider } from "./context/LoginContext"; // Import the LoginProvider
+import Home from "./Components/Home.jsx";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import "./Components/Home.css";
+import RootLayout from "./layouts/RootLayout.jsx";
+import About from "./Components/About.jsx";
+import Contact from "./Components/ContactUs.jsx";
 
 const App = () => {
-  return (
-    <div>
-      <Home />
-    </div>
-  )
-}
+  useEffect(() => {
+    AOS.init({ duration: 1400, once: false });
+  }, []);
 
-export default App
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<RootLayout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path = "contact"element={<Contact />} />
+      </Route>
+    )
+  );
+
+  return (
+    <LoginProvider>
+      <RouterProvider router={router} />
+    </LoginProvider>
+  );
+};
+
+export default App;
