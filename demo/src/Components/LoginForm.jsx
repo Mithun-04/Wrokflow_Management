@@ -39,8 +39,6 @@ const LoginForm = ({ toggleForm }) => {
         <div className="wrapper1 login" data-aos="fade-up-left" data-aos-duration="1400">
             <form onSubmit={handleLogin}>
                 <h1>Login</h1>
-                {error && <p className="error">{error}</p>}
-                {success && <p className="success">Login successful!</p>}
                 <div className="input-box">
                     <input
                         type="email"
