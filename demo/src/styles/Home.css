@@ -286,6 +286,8 @@ section {
   
   /* Form */
   .contact-form {
+    max-width: 550px;
+    max-height: 400px;
     display: flex;
     flex-direction: column;
     margin-top: 140px;
@@ -366,6 +368,7 @@ section {
    display: grid;
    padding: 40px;
    grid-template-columns: repeat(2, 1fr);
+   gap: 4rem;
 }
 
   

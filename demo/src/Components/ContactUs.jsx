@@ -24,24 +24,18 @@ const ContactUs = () => {
             >
                 <div
                     className="form-group"
-                    data-aos="fade-right"
-                    data-aos-duration="1000"
                 >
                     <label htmlFor="name">Name</label>
                     <input type="text" id="name" placeholder="Your Full Name" required />
                 </div>
                 <div
                     className="form-group"
-                    data-aos="fade-left"
-                    data-aos-duration="1000"
                 >
                     <label htmlFor="email">Email</label>
                     <input type="email" id="email" placeholder="Your Email Address" required />
                 </div>
                 <div
                     className="form-group"
-                    data-aos="fade-right"
-                    data-aos-duration="1000"
                 >
                     <label htmlFor="message">Message</label>
                     <textarea id="message" rows="6" placeholder="Write your message here..." required></textarea>
@@ -49,8 +43,6 @@ const ContactUs = () => {
                 <button
                     type="submit"
                     className="submit-btn"
-                    data-aos="fade-up"
-                    data-aos-duration="1200"
                 >
                     Send Message
                 </button>
