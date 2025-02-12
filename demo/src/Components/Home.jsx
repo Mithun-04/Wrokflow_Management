@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react'; // Added useContext
-import './Home.css'; // Import CSS for this component
+import '../styles/Home.css'; // Import CSS for this component
 import 'aos/dist/aos.css'; // AOS CSS
 import side_img from '../assets/cont-img.png'; // Path to the side image
 import person from '../assets/person2.png'; // Path to the person image
