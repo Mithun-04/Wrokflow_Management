@@ -8,9 +8,9 @@ function DashBoard() {
     <div className='dashboard-container'>
         <div className='dashboard-topbar'>
             <h1>Dashboard</h1>
-            
+             
             <RiAccountCircleLine className='profile-icon' /> 
-
+      
         </div>
         
         <div className="dashboard-leftbar">
