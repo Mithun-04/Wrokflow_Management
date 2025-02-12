@@ -15,6 +15,7 @@ import About from "./Components/About.jsx";
 import Contact from "./Components/ContactUs.jsx";
 import Dashboard from "./Components/DashBoard.jsx";
 import ProtectedRoute from "./Components/ProtectedRoute"; // Import the ProtectedRoute component
+import Popup from "./Components/popup.jsx";
 
 const App = () => {
   useEffect(() => {
