@@ -30,8 +30,8 @@ const App = () => {
 
   return (
     <LoginProvider>
-      <RouterProvider router={router} />
-    </LoginProvider>
+    <RouterProvider router={router} />
+  </LoginProvider>
   );
 };
 
