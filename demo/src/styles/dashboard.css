@@ -1,11 +1,4 @@
-.dashboard-container{
-    background-color:hsl(0, 0%, 32%);
-    background-image: none;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
+
 .dashboard-container::before {
     content: "";
     position: absolute;
@@ -17,34 +10,51 @@
     z-index: 998; /* Keep it below the sidebar */
 }
 
-.dashboard-topbar{
-    background: #1e1e1e;
-    color: aliceblue;
-    width: 100%;
-    height: 80px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    z-index: 1000; 
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); 
-    transition: all 0.3s ease;
+
+
+.dashboard-container h1{
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-left: 20px;
+    
 }
 
 
 
-.dashboard-leftbar{
-    background-color: #1e1e1e;
+.dashboard-topbar {
+    position: fixed; /* Ensures it stays on top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: #1e1e1e;
+    color: aliceblue;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1001; /* Higher than leftbar */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.dashboard-leftbar {
+    position: fixed;
+    left: 0;
+    top: 0;
     width: 250px;
     height: 100vh;
-    margin: 0;
-    padding: 0;
-    z-index: 999; 
-    box-shadow: 4px 0px 6px rgba(0, 0, 0, 0.3); 
-    transition: all 0.3s ease; 
+    background-color: #1e1e1e;
+    z-index: 1000; /* Lower than topbar */
+    box-shadow: 4px 0px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.dashboard-container {
+    margin-left: 250px; /* Prevents content from going under the left sidebar */
+    margin-top: 80px; /* Prevents content from going under the top bar */
+    width: calc(100% - 250px);
 }
 
 .dashboard-leftbar:hover {

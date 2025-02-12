@@ -1,6 +1,11 @@
-import  { useEffect } from "react";
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
-import { LoginProvider } from "./context/LoginContext"; // Import the LoginProvider
+import React, { useEffect } from "react";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+import { LoginProvider } from "./context/LoginContext";
 import Home from "./Components/Home.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -9,6 +14,7 @@ import RootLayout from "./layouts/RootLayout.jsx";
 import About from "./Components/About.jsx";
 import Contact from "./Components/ContactUs.jsx";
 import Dashboard from "./Components/DashBoard.jsx";
+import ProtectedRoute from "./Components/ProtectedRoute"; // Import the ProtectedRoute component
 
 const App = () => {
   useEffect(() => {
@@ -23,15 +29,22 @@ const App = () => {
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
         </Route>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
       </>
     )
   );
 
   return (
     <LoginProvider>
-    <RouterProvider router={router} />
-  </LoginProvider>
+      <RouterProvider router={router} />
+    </LoginProvider>
   );
 };
 
