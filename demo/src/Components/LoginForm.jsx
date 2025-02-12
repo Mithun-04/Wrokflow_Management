@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
-import { supabase } from "./supabaseClient";
 import "../styles/LoginForm.css";
+import { supabase } from "./supabaseClient";
+import { LoginContext } from "../context/LoginContext"; // Import LoginContext
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const LoginForm = ({ toggleForm }) => {
-    const [email, setEmail] = useState(""); 
+    const { login } = useContext(LoginContext); // Get login function from context
+    const navigate = useNavigate(); // Initialize navigation
+
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
@@ -14,14 +19,14 @@ const LoginForm = ({ toggleForm }) => {
         setError("");
         setSuccess(false);
 
-        console.log("Login attempt with:", email, password);  // Debugging line
+        console.log("Login attempt with:", email, password); // Debugging
 
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
         });
 
-        console.log("Response:", data, error);  // Debugging line
+        console.log("Response:", data, error); // Debugging
 
         if (error) {
             if (error.message.includes("Invalid login credentials")) {
@@ -30,8 +35,8 @@ const LoginForm = ({ toggleForm }) => {
                 alert("Something went wrong. Please try again.");
             }
         } else {
-            setSuccess(true);
-            alert("Login successful!");
+            login(); // Call the login function from LoginContext
+            navigate("/dashboard"); // Redirect to dashboard
         }
     };
 
@@ -61,7 +66,7 @@ const LoginForm = ({ toggleForm }) => {
                 </div>
                 <button type="submit">Log In Now</button>
                 <div className="new">
-                    <p>Don't have an account yet?</p>
+                    <p>Don&apos;t have an account yet?</p>
                     <p>-</p>
                     <button type="button" onClick={toggleForm} className="toggle-link">
                         Sign Up

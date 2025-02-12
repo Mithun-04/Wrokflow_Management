@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useContext, useRef } from 'react'; // Added useContext
 import '../styles/Home.css'; // Import CSS for this component
 import 'aos/dist/aos.css'; // AOS CSS

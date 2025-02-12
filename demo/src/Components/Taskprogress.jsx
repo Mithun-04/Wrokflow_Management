@@ -1,6 +1,24 @@
-
+import { useState } from "react";
 
   const CardLayout = () => {
+
+    const [tasks, setTasks] = useState([
+      "Check access control list",
+      "Verify synchronization",
+      "Run launch tests",
+    ]);
+  
+    const [completedTasks, setCompletedTasks] = useState([
+      "Construct basic template",
+      "Iterate design",
+    ]);
+  
+    const markAsCompleted = (task) => {
+      setTasks(tasks.filter((t) => t !== task));
+      setCompletedTasks([...completedTasks, task]);
+    };
+
+    
     const layoutStyle = {
       display: "grid",
       gridTemplateAreas: `
@@ -181,18 +199,14 @@
           >
             <p>Your Tasks</p>
             <div style={{ width: "100%" }}>
-              <div style={taskStyle}>
-                <span>Check acces control list</span>
-                <button style={buttonStyle}>Mark as Completed</button>
-              </div>
-              <div style={taskStyle}>
-                <span>Verify synchronization</span>
-                <button style={buttonStyle}>Mark as Completed</button>
-              </div>
-              <div style={taskStyle}>
-                <span>Run launch tests</span>
-                <button style={buttonStyle}>Mark as Completed</button>
-              </div>
+              {tasks.map((task) => (
+                <div key={task} style={taskStyle}>
+                  <span>{task}</span>
+                  <button style={buttonStyle} onClick={() => markAsCompleted(task)}>
+                    Mark as Completed
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -213,14 +227,12 @@
           >
             <p>Completed Works</p>
             <div style={{ width: "100%" }}>
-              <div style={taskStyle}>
-                <span>Construct basic template</span>
-                <span style={tickIconStyle}>✔️</span>
-              </div>
-              <div style={taskStyle}>
-                <span>Iterate design</span>
-                <span style={tickIconStyle}>✔️</span>
-              </div>
+              {completedTasks.map((task) => (
+                <div key={task} style={taskStyle}>
+                  <span>{task}</span>
+                  <span style={tickIconStyle}>✔️</span>
+                </div>
+              ))}
             </div>
           </div>
 

@@ -76,7 +76,7 @@ const Carousel = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    centerPadding: "210px",
+    centerPadding: "200px",
     centerMode: true,
     beforeChange: (oldIndex, newIndex) => setCurrentSlide(newIndex),
     nextArrow: <CustomArrow direction="right" />,
@@ -93,8 +93,10 @@ const Carousel = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
-        backgroundColor: "#EBF4F6",
+        marginTop: "150px",
+        maxHeight: "300px",
+        background:"transparent",
+        zIndex: -1,
       }}
     >
       <div style={{ width: "60%", position: "relative" }}>
@@ -104,7 +106,7 @@ const Carousel = () => {
               <div
                 style={{
                   ...boxStyle,
-                  filter: index === currentSlide ? "none" : "blur(0.35px)",
+                  filter: index === currentSlide ? "none" : "blur(1px)",
                   opacity: index === currentSlide ? 1 : 0.9,
                 }}
               >
