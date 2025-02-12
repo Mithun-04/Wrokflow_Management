@@ -28,12 +28,11 @@ const App = () => {
     )
   );
 
-function App() {
   return (
-    
-        <CardLayout/>
-      
+    <LoginProvider>
+    <RouterProvider router={router} />
+  </LoginProvider>
   );
-}
+};
 
 export default App;
