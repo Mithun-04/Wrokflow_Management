@@ -40,7 +40,6 @@ const LoginForm = ({ toggleForm }) => {
             <form onSubmit={handleLogin}>
                 <h1>Login</h1>
                 {error && <p className="error">{error}</p>}
-                {success && <p className="success">Login successful!</p>}
                 <div className="input-box">
                     <input
                         type="email"

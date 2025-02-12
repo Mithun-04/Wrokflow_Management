@@ -1,34 +1,11 @@
-import React, { useEffect } from "react";
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
-import { LoginProvider } from "./context/LoginContext"; // Import the LoginProvider
-import Home from "./Components/Home.jsx";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import "./Components/Home.css";
-import RootLayout from "./layouts/RootLayout.jsx";
-import About from "./Components/About.jsx";
-import Contact from "./Components/ContactUs.jsx";
+import CardLayout from "./Components/Taskprogress";
 
-const App = () => {
-  useEffect(() => {
-    AOS.init({ duration: 1400, once: false });
-  }, []);
-
-  const router = createBrowserRouter(
-    createRoutesFromElements(
-      <Route path="/" element={<RootLayout />}>
-        <Route index element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path = "contact"element={<Contact />} />
-      </Route>
-    )
-  );
-
+function App() {
   return (
-    <LoginProvider>
-      <RouterProvider router={router} />
-    </LoginProvider>
+    
+        <CardLayout/>
+      
   );
-};
+}
 
 export default App;
