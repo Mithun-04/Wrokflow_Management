@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { supabase } from "./supabaseClient";
-import "./LoginForm.css";
+import "../styles/LoginForm.css";
 
 const LoginForm = ({ toggleForm }) => {
     const [email, setEmail] = useState(""); 
@@ -39,7 +39,6 @@ const LoginForm = ({ toggleForm }) => {
         <div className="wrapper1 login" data-aos="fade-up-left" data-aos-duration="1400">
             <form onSubmit={handleLogin}>
                 <h1>Login</h1>
-                {error && <p className="error">{error}</p>}
                 <div className="input-box">
                     <input
                         type="email"
