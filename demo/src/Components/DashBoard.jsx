@@ -1,6 +1,7 @@
 import React from 'react'
 import '../styles/DashBoard.css'
 import { RiAccountCircleLine } from "react-icons/ri";
+import Carousel from './projects';
 
 function DashBoard() {
   return (
@@ -11,9 +12,12 @@ function DashBoard() {
             <RiAccountCircleLine className='profile-icon' /> 
 
         </div>
+        
         <div className="dashboard-leftbar">
-
+  
         </div>
+        
+        
     </div>
 
   )
