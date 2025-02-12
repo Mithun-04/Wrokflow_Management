@@ -1,10 +1,20 @@
 .dashboard-container{
-    background-color:#525252;
+    background-color:hsl(0, 0%, 32%);
     background-image: none;
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
+}
+.dashboard-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px; /* Match the width of the left sidebar */
+    height: 100vh;
+    background-color: #1e1e1e;
+    z-index: 998; /* Keep it below the sidebar */
 }
 
 .dashboard-topbar{
@@ -23,6 +33,7 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); 
     transition: all 0.3s ease;
 }
+
 
 
 .dashboard-leftbar{
