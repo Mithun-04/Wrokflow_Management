@@ -10,13 +10,23 @@ const SignUpForm = ({ toggleForm }) => {
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-        const { error } = await supabase.auth.signUp({
+        const { data,error } = await supabase.auth.signUp({
             email,
             password,
         });
         if (error) {
             setError(error.message);
-        } else {
+            return;
+        }
+        if (data.user) {
+            // Insert username and email into the "profiles" table
+            await supabase.from("profiles").insert([
+                {
+                    id: data.user.id, // Use the user's Supabase Auth ID
+                    email,
+                },
+            ]);
+    
             alert("Account created successfully! Please log in.");
             toggleForm(); // Switch to login form after successful signup
         }
