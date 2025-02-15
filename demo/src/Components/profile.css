@@ -1,0 +1,40 @@
+* {
+    font-family: "Roboto Mono", serif;
+    list-style-type: none;
+}
+
+
+
+
+
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+
+.profile {
+    padding: 20px;
+    background: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 500px;
+    color: white;
+}
+
+.heading {
+    color: white;
+    position: absolute;
+    top: 20px; /* Adjust the top spacing */
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+* {
+    font-family: "Roboto Mono", serif;
+    list-style-type: none;
+}

@@ -15,6 +15,7 @@ import About from "./Components/About.jsx";
 import Contact from "./Components/ContactUs.jsx";
 import Dashboard from "./Components/DashBoard.jsx";
 import ProtectedRoute from "./Components/ProtectedRoute"; // Import the ProtectedRoute component
+import Profile from "./Components/profile";
 
 const App = () => {
   useEffect(() => {
@@ -37,6 +38,8 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="profile" element={<Profile/>} />
+        
       </>
     )
   );

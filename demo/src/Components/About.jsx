@@ -17,7 +17,7 @@ const About = () => {
         <div className="about-hero-content">
           <h1 data-aos="fade-up">About Us</h1>
           <p data-aos="fade-up" data-aos-delay="200">
-            We're here to make your life simpler. Our goal is to help you stay organized, productive, and stress-free.
+            We&apos;re here to make your life simpler. Our goal is to help you stay organized, productive, and stress-free.
           </p>
         </div>
       </section>
