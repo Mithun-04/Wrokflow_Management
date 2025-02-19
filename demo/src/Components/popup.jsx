@@ -3,13 +3,13 @@ import "../styles/popup.css";
 
 function Popup({ setModal }) {
   return (
-    <div className="popup">
-      <button className="close-btn" onClick={() => setModal(false)}>✖</button>
-      <h1>Create Project</h1>
-      <form>
-        <label htmlFor="project-name">Project Name:</label>
-        <input type="text" id="project-name" name="project-name" required />
-        <button type="submit" onClick={() => setModal(false)}>Submit</button>
+    <div className="popup-container">
+      <button className="popup-close-btn" onClick={() => setModal(false)}>✖</button>
+      <h1 className="popup-title">Create Project</h1>
+      <form className="popup-form">
+        <label className="popup-label" htmlFor="project-name">Project Name:</label>
+        <input className="popup-input" type="text" id="project-name" name="project-name" required />
+        <button className="popup-submit-btn" type="submit" onClick={() => setModal(false)}>Submit</button>
       </form>
     </div>
   );
