@@ -32,7 +32,7 @@ const login = async (email, password) => {
 };
 
 /**
- * Get User Profile Service
+ * Get U  ser Profile Service
  */
 const getProfile = async (userId) => {
   const user = await User.findById(userId).select("-password");
