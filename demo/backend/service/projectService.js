@@ -92,7 +92,6 @@ const getProjectDetails = async (projectId, userId) => {
 
     return projectDetails;
 };
-
 const inviteMembersToProject = async (projectId, managerId, invitations) => {
     const projectObjectId = new mongoose.Types.ObjectId(projectId);
     const managerObjectId = new mongoose.Types.ObjectId(managerId);
@@ -113,29 +112,32 @@ const inviteMembersToProject = async (projectId, managerId, invitations) => {
     const invitationDocs = [];
 
     for (const invitation of invitations) {
-        if (!invitation.userId || !invitation.role) {
-            throw new Error('Each invitation must have a userId and role');
+        if (!invitation.name || !invitation.role) {
+            throw new Error('Each invitation must have a username and role');
         }
         if (!validRoles.includes(invitation.role)) {
             throw new Error(`Invalid role: ${invitation.role}. Must be one of ${validRoles}`);
         }
 
-        const userExists = await User.findById(invitation.userId);
-        if (!userExists) {
-            throw new Error(`User with ID ${invitation.userId} not found`);
+        // Find user by username
+        const user = await User.findOne({ name: invitation.name });
+        if (!user) {
+            throw new Error(`User with username ${invitation.username} not found`);
         }
+
+        const userId = user._id; // Get the ObjectId from the user document
 
         const existingInvitation = await Invitation.findOne({
             projectId: projectObjectId,
-            userId: invitation.userId,
+            userId: userId,
             status: 'pending',
         });
-        const isAlreadyMember = project.members.some(m => m.userId.toString() === invitation.userId.toString());
+        const isAlreadyMember = project.members.some(m => m.userId.toString() === userId.toString());
 
         if (!existingInvitation && !isAlreadyMember) {
             invitationDocs.push({
                 projectId: projectObjectId,
-                userId: invitation.userId,
+                userId: userId, // Store userId in the invitation
                 role: invitation.role,
             });
         }
@@ -147,7 +149,6 @@ const inviteMembersToProject = async (projectId, managerId, invitations) => {
 
     return;
 };
-
 export default {
     createProject,
     getProjects,
