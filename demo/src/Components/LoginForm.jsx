@@ -3,11 +3,15 @@ import { FaUser, FaLock } from "react-icons/fa";
 import "../styles/LoginForm.css";
 import { LoginContext } from "../context/LoginContext";
 import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
+
+
+const cookies = new Cookies();
 
 const LoginForm = ({ toggleForm }) => {
     const { login } = useContext(LoginContext);
     const navigate = useNavigate();
-    
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -22,16 +26,19 @@ const LoginForm = ({ toggleForm }) => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
-            
+
             const data = await response.json();
-            
+
             if (!response.ok) {
                 alert(data.msg || "Login failed");
                 return;
             }
-            
-            localStorage.setItem("token", data.token);
-            login(); // Call context login function
+
+            cookies.set("token", data.token, {
+                path: "/",
+                expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
+            });
+            login();
             navigate("/dashboard");
         } catch (err) {
             setError(err.message);
