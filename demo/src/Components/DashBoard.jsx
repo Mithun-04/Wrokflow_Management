@@ -5,6 +5,9 @@ import CardLayout from './Taskprogress';
 import Carousel from './projects';
 import addicon from '../assets/add.png';
 import Popup from './Popup';
+import Cookies  from 'universal-cookie';
+
+const cookies = new Cookies();
 
 function DashBoard() {
   const [username, setUsername] = useState('');
@@ -13,7 +16,8 @@ function DashBoard() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = cookies.get("token");
+        
         console.log("Token being sent:", token);
 
         if (!token) {
