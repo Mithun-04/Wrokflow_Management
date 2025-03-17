@@ -29,7 +29,7 @@
     opacity: 1;
     visibility: visible;
     transition: opacity 0.3s ease-in-out;
-    z-index: 1000;
+    z-index: 1001;
 }
 
 .popup-title {
