@@ -16,6 +16,7 @@ import Contact from "./Components/ContactUs.jsx";
 import Dashboard from "./Components/DashBoard.jsx";
 import ProtectedRoute from "./Components/ProtectedRoute"; // Import the ProtectedRoute component
 
+
 const App = () => {
   useEffect(() => {
     AOS.init({ duration: 1400, once: false });
