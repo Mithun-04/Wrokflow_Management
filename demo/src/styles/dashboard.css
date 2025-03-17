@@ -83,3 +83,9 @@
     width: 100%; 
     height: 100%;
 }
+
+body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
