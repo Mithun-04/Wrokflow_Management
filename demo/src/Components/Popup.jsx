@@ -22,14 +22,11 @@ function Popup({ setModal }) {
       });
 
       const data = await response.json();
-      console.log(data.message);
       
       if (!response.ok) {
         alert(data.msg || "Project Creation failed");
         return;
       }
-
-      // Close modal on successful creation
       setModal(false);
     } catch (err) {
       setError(err.message);
