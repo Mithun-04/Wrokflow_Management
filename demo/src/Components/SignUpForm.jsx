@@ -1,24 +1,37 @@
 import React, { useState } from "react";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
-import { supabase } from "./supabaseClient"; // Import Supabase client
+import "../styles/LoginForm.css";
 
 const SignUpForm = ({ toggleForm }) => {
-    const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState(false);
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-        const { error } = await supabase.auth.signUp({
-            email,
-            password,
-        });
-        if (error) {
-            setError(error.message);
-        } else {
+        setError("");
+        setSuccess(false);
+
+        try {
+            const response = await fetch("http://localhost:5555/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, password }),
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.msg || "Signup failed");
+            }
+            
+            setSuccess(true);
             alert("Account created successfully! Please log in.");
-            toggleForm(); // Switch to login form after successful signup
+            toggleForm(); // Switch to login form
+        } catch (err) {
+            setError(err.message);
         }
     };
 
@@ -26,13 +39,13 @@ const SignUpForm = ({ toggleForm }) => {
         <div className="wrapper1 signup" data-aos="fade-up-left" data-aos-duration="1400">
             <form onSubmit={handleSignUp}>
                 <h1>Sign Up</h1>
-                {error && <p className="error">{error}</p>}
                 <div className="input-box">
                     <input
                         type="text"
                         placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
                     />
                     <FaUser className="icon" />
                 </div>
@@ -42,6 +55,7 @@ const SignUpForm = ({ toggleForm }) => {
                         placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        required
                     />
                     <FaEnvelope className="icon" />
                 </div>
@@ -51,13 +65,13 @@ const SignUpForm = ({ toggleForm }) => {
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        required
                     />
                     <FaLock className="icon" />
                 </div>
                 <button type="submit">Create Account</button>
                 <div className="new">
                     <p>Already have an account?</p>
-                    <p>-</p>
                     <button type="button" onClick={toggleForm} className="toggle-link">
                         Login Here
                     </button>
