@@ -10,7 +10,7 @@ export const createTask = async (req, res) => {
             assignedTo: req.body.assignedTo,
             priority: req.body.priority,
             dueDate: req.body.dueDate,
-            createdBy: req.user._id, // Manager ID
+            createdBy: req.user.id, // Manager ID
         });
         res.status(201).json(task);
     } catch (error) {
@@ -31,7 +31,7 @@ export const getProjectTasks = async (req, res) => {
 // Get All Tasks Assigned to Logged-in User
 export const getUserTasks = async (req, res) => {
     try {
-        const tasks = await taskService.getUserTasks(req.user._id);
+        const tasks = await taskService.getUserTasks(req.user.id);
         res.json(tasks);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -43,7 +43,7 @@ export const updateTask = async (req, res) => {
     try {
         const task = await taskService.updateTask( 
             req.params.id,
-            req.user._id,
+            req.user.id,
             req.user.role,
             req.body
         );

@@ -1,15 +1,31 @@
 import Task from "../models/Task.js";
 import User from "../models/User.js";
+import Project from "../models/Project.js"; // Import Project model
 import mongoose from "mongoose";
-const { authMiddleware, managerMiddleware } = require('../middleware/authMiddleware.js');
 
-// Create Task (Manager Only)
+// ✅ Create Task (Manager Only)
 const createTask = async ({ title, description, projectId, assignedTo, priority, dueDate, createdBy }) => {
+    if (!mongoose.Types.ObjectId.isValid(projectId)) {
+        throw new Error("Invalid project ID");
+    }
+
+    // Fetch the project to check if the user is the manager
+    const project = await Project.findById(projectId);
+    if (!project) {
+        throw new Error("Project not found");
+    }
+
+    if (project.manager.toString() !== createdBy.toString()) {
+        throw new Error("Unauthorized: Only the project manager can create tasks");
+    }
+
+    // Check if assigned user exists
     const user = await User.findById(assignedTo);
     if (!user) {
         throw new Error("Assigned user not found");
     }
 
+    // Create and save the task
     const task = new Task({
         title,
         description,
@@ -23,7 +39,7 @@ const createTask = async ({ title, description, projectId, assignedTo, priority,
     return await task.save();
 };
 
-// Get All Tasks in a Project
+// ✅ Get All Tasks in a Project
 const getProjectTasks = async (projectId) => {
     if (!mongoose.Types.ObjectId.isValid(projectId)) {
         throw new Error("Invalid project ID");
@@ -32,13 +48,21 @@ const getProjectTasks = async (projectId) => {
     return await Task.find({ projectId }).populate("assignedTo", "name email");
 };
 
-// Get Tasks Assigned to a User
+// ✅ Get Tasks Assigned to a User
 const getUserTasks = async (userId) => {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        throw new Error("Invalid user ID");
+    }
+
     return await Task.find({ assignedTo: userId });
 };
 
-// Update Task (Assigned User or Manager)
+// ✅ Update Task (Only Assigned User or Manager)
 const updateTask = async (taskId, userId, userRole, updateData) => {
+    if (!mongoose.Types.ObjectId.isValid(taskId)) {
+        throw new Error("Invalid task ID");
+    }
+
     const task = await Task.findById(taskId);
     if (!task) throw new Error("Task not found");
 
@@ -51,11 +75,24 @@ const updateTask = async (taskId, userId, userRole, updateData) => {
     return await task.save();
 };
 
-// Delete Task (Manager Only)
-const deleteTask = async (taskId) => {
+// ✅ Delete Task (Manager Only)
+const deleteTask = async (taskId, userId, userRole) => {
+    if (!mongoose.Types.ObjectId.isValid(taskId)) {
+        throw new Error("Invalid task ID");
+    }
+
+    const task = await Task.findById(taskId);
+    if (!task) throw new Error("Task not found");
+
+    // Only the manager can delete tasks
+    if (userRole !== "manager") {
+        throw new Error("Access denied: Only the manager can delete tasks");
+    }
+
     return await Task.findByIdAndDelete(taskId);
 };
 
+// ✅ Export All Functions
 export default {
     createTask,
     getProjectTasks,
