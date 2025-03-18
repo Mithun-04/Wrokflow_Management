@@ -3,7 +3,7 @@ import projectService from "../service/projectService.js"
 const createProject = async (req, res) => {
 
     try {
-        const name = req.body.name;
+        const name = req.body.projectname;
 
         const managerId = req.user.id;
 
