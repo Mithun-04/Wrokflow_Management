@@ -6,7 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
 import invitationRoutes from './routes/invitationRoutes.js'
 import taskRoutes from "./routes/taskRoutes.js";
-
+//import authMiddleware from '../middleware/authMiddleware.js';
 
 config();
 const app = express();

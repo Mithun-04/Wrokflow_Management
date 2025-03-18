@@ -1,6 +1,7 @@
 import express from 'express';
 import invitationController from '../controller/invitationController.js';
-import authMiddleware from '../middleware/authMiddleware.js';
+const { authMiddleware, managerMiddleware } = require('../middleware/authMiddleware.js');
+
 
 const router = express.Router();
 

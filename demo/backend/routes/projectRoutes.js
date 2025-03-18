@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import projectController from "../controller/projectController.js";
-import authMiddleware from '../middleware/authMiddleware.js';
+//import { authMiddleware, managerMiddleware } from '../middleware/authMiddleware.js';
+const { authMiddleware, managerMiddleware } = require('../middleware/authMiddleware.js');
+
+
 
 
 

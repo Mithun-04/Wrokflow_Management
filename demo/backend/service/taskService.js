@@ -1,6 +1,7 @@
 import Task from "../models/Task.js";
 import User from "../models/User.js";
 import mongoose from "mongoose";
+const { authMiddleware, managerMiddleware } = require('../middleware/authMiddleware.js');
 
 // Create Task (Manager Only)
 const createTask = async ({ title, description, projectId, assignedTo, priority, dueDate, createdBy }) => {
