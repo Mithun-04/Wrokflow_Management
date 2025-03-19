@@ -76,9 +76,12 @@ const updateTask = async (taskId, userId, userRole, updateData) => {
         throw new Error("Access denied");
     }
 
-    Object.assign(task, updateData);
-    return await task.save();
+    // Update task status
+    task.status = updateData.status; // Assign new status
+
+    return await task.save(); // Save updated task
 };
+
 
 // ✅ Delete Task (Manager Only)
 const deleteTask = async (taskId, userId, userRole) => {

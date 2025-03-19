@@ -52,9 +52,17 @@ export const getUserTasks = async (req, res) => {
 // Update Task (Only Assigned User or Manager Can Update)
 export const updateTask = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { _id: userId, role } = req.user; // Extract user ID and role
-        const updatedTask = await taskService.updateTask(id, userId, role, req.body);
+        const { id: taskId } = req.params; // Extract task ID from request params
+        const { _id: userId, role: userRole } = req.user; // Extract user ID and role
+        const { status } = req.body; // Extract updated status from request body
+
+        // Ensure status is provided
+        if (!status) {
+            return res.status(400).json({ success: false, message: "Status is required" });
+        }
+
+        // Call the service function with required parameters
+        const updatedTask = await taskService.updateTask(taskId, userId, userRole, { status });
 
         res.status(200).json({ success: true, data: updatedTask, message: "Task updated successfully" });
     } catch (error) {
