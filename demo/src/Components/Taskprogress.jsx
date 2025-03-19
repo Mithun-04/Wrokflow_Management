@@ -1,37 +1,126 @@
 import { useEffect, useState } from "react";
-import { useTaskApi } from "../hooks/useTaskApi";
+import Cookies from 'universal-cookie';
 
-const CardLayout = () => {
-  const { getUserTasks, updateTaskStatus } = useTaskApi();
+const cookies = new Cookies();
+
+const CardLayout = ({ projectId = null }) => {
   const [todoTasks, setTodoTasks] = useState([]);
   const [ongoingTasks, setOngoingTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [deadlines, setDeadlines] = useState([]); // Stores tasks with due dates
 
-  // Fetch tasks from backend on component mount
+  // Fetch tasks for the user in the specified project
+  const fetchUserTasks = async (projectId) => {
+    try {
+      const token = cookies.get("token");
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      // If projectId is null, we can skip fetching or fetch all tasks (optional)
+      if (!projectId) {
+        return []; // Return empty array if no projectId is provided
+      }
+
+      const response = await fetch(`http://localhost:5555/api/tasks/${projectId}/`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Server response:', errorData);
+        throw new Error(errorData.error || `Failed to fetch tasks: ${response.statusText}`);
+      }
+
+      const data = await response.json(); 
+      console.log('Fetched tasks:', data);
+
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to fetch tasks');
+      }
+
+      return data.data || []; // Return the tasks array
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      return []; // Return empty array on error
+    }
+  };
+
+  // Update task status (e.g., to "on-progress" or "completed")
+  const updateTaskStatus = async (taskId, status) => {
+    try {
+      const token = cookies.get("token");
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      console.log("taskId:",taskId);
+
+      const response = await fetch(`http://localhost:5555/api/tasks/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to update task status');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error updating task status:', error);
+      throw error;
+    }
+  };
+
+  // Fetch tasks when the component mounts or projectId changes
   useEffect(() => {
     const fetchTasks = async () => {
-      const tasks = await getUserTasks();
-      setTodoTasks(tasks.filter((t) => t.status === "to-do"));
-      setOngoingTasks(tasks.filter((t) => t.status === "on-progress"));
-      setCompletedTasks(tasks.filter((t) => t.status === "completed"));
-      setDeadlines(tasks.filter((t) => t.dueDate)); // Filter tasks with due dates
+      try {
+        const tasks = await fetchUserTasks(projectId);
+        setTodoTasks(tasks.filter((t) => t.status === "todo"));
+        setOngoingTasks(tasks.filter((t) => t.status === "on-progress"));
+        setCompletedTasks(tasks.filter((t) => t.status === "done"));
+        setDeadlines(tasks.filter((t) => t.dueDate)); // Filter tasks with due dates
+      } catch (error) {
+        console.error('Error fetching tasks in CardLayout:', error);
+        setTodoTasks([]);
+        setOngoingTasks([]);
+        setCompletedTasks([]);
+        setDeadlines([]);
+      }
     };
     fetchTasks();
-  }, []);
+  }, [projectId]); // Re-fetch tasks when projectId changes
 
-  // Move task to "On Progress"
+
   const startTask = async (task) => {
-    await updateTaskStatus(task._id, "on-progress");
-    setTodoTasks((prev) => prev.filter((t) => t._id !== task._id));
-    setOngoingTasks((prev) => [...prev, { ...task, status: "on-progress" }]);
+    try {
+      await updateTaskStatus(task._id, "on-progress");
+      setTodoTasks((prev) => prev.filter((t) => t._id !== task._id));
+      setOngoingTasks((prev) => [...prev, { ...task, status: "on-progress" }]);
+    } catch (error) {
+      console.error('Error starting task:', error);
+    }
   };
 
   // Move task to "Completed"
   const markAsCompleted = async (task) => {
-    await updateTaskStatus(task._id, "completed");
-    setOngoingTasks((prev) => prev.filter((t) => t._id !== task._id));
-    setCompletedTasks((prev) => [...prev, { ...task, status: "completed" }]);
+    try {
+      await updateTaskStatus(task._id, "done");
+      setOngoingTasks((prev) => prev.filter((t) => t._id !== task._id));
+      setCompletedTasks((prev) => [...prev, { ...task, status: "completed" }]);
+    } catch (error) {
+      console.error('Error marking task as completed:', error);
+    }
   };
 
   const layoutStyle = {
@@ -63,12 +152,16 @@ const CardLayout = () => {
         <div style={cardStyle}>
           <p>To-Do Tasks</p>
           <div>
-            {todoTasks.map((task) => (
-              <div key={task._id} style={{ marginBottom: "5px", display: "flex", justifyContent: "space-between" }}>
-                <span>{task.title}</span>
-                <button onClick={() => startTask(task)}>Start</button>
-              </div>
-            ))}
+            {todoTasks.length > 0 ? (
+              todoTasks.map((task) => (
+                <div key={task._id} style={{ marginBottom: "5px", display: "flex", justifyContent: "space-between" }}>
+                  <span>{task.title}</span>
+                  <button onClick={() => startTask(task)}>Start</button>
+                </div>
+              ))
+            ) : (
+              <p>No to-do tasks.</p>
+            )}
           </div>
         </div>
 
@@ -76,12 +169,16 @@ const CardLayout = () => {
         <div style={cardStyle}>
           <p>Ongoing Tasks</p>
           <div>
-            {ongoingTasks.map((task) => (
-              <div key={task._id} style={{ marginBottom: "5px", display: "flex", justifyContent: "space-between" }}>
-                <span>{task.title}</span>
-                <button onClick={() => markAsCompleted(task)}>Mark as Completed</button>
-              </div>
-            ))}
+            {ongoingTasks.length > 0 ? (
+              ongoingTasks.map((task) => (
+                <div key={task._id} style={{ marginBottom: "5px", display: "flex", justifyContent: "space-between" }}>
+                  <span>{task.title}</span>
+                  <button onClick={() => markAsCompleted(task)}>Mark as Completed</button>
+                </div>
+              ))
+            ) : (
+              <p>No ongoing tasks.</p>
+            )}
           </div>
         </div>
 
@@ -89,11 +186,15 @@ const CardLayout = () => {
         <div style={cardStyle}>
           <p>Completed Tasks</p>
           <div>
-            {completedTasks.map((task) => (
-              <div key={task._id} style={{ marginBottom: "5px" }}>
-                <span>{task.title} ✔️</span>
-              </div>
-            ))}
+            {completedTasks.length > 0 ? (
+              completedTasks.map((task) => (
+                <div key={task._id} style={{ marginBottom: "5px" }}>
+                  <span>{task.title} ✔️</span>
+                </div>
+              ))
+            ) : (
+              <p>No completed tasks.</p>
+            )}
           </div>
         </div>
       </div>
@@ -102,11 +203,15 @@ const CardLayout = () => {
       <div style={cardStyle} gridArea="completion">
         <p>Upcoming Deadlines</p>
         <ul>
-          {deadlines.map((task) => (
-            <li key={task._id}>
-              {task.title} - Due: {new Date(task.dueDate).toLocaleDateString()}
-            </li>
-          ))}
+          {deadlines.length > 0 ? (
+            deadlines.map((task) => (
+              <li key={task._id}>
+                {task.title} - Due: {new Date(task.dueDate).toLocaleDateString()}
+              </li>
+            ))
+          ) : (
+            <p>No upcoming deadlines.</p>
+          )}
         </ul>
       </div>
 

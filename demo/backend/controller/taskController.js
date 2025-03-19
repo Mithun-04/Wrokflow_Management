@@ -1,16 +1,16 @@
-import taskService from "../service/taskService.js"; 
+import taskService from "../service/taskService.js";
 
 // Create Task (Manager Only)
 export const createTask = async (req, res) => {
     try {
-        const task = await taskService.createTask({ 
+        const task = await taskService.createTask({
             title: req.body.title,
             description: req.body.description,
             projectId: req.body.projectId,
             assignedTo: req.body.assignedTo,
             priority: req.body.priority,
             dueDate: req.body.dueDate,
-            createdBy: req.user.id, 
+            createdBy: req.user.id,
         });
         res.status(201).json(task);
     } catch (error) {
@@ -21,7 +21,7 @@ export const createTask = async (req, res) => {
 export const getProjectTasks = async (req, res) => {
     try {
         const projectId = req.params.projectId;
-        const userId = req.user.id; 
+        const userId = req.user.id;
 
         const tasks = await taskService.getProjectTasks(projectId, userId);
         res.json({
@@ -30,9 +30,9 @@ export const getProjectTasks = async (req, res) => {
             message: 'Tasks retrieved successfully'
         });
     } catch (error) {
-        res.status(400).json({ 
+        res.status(400).json({
             success: false,
-            error: error.message 
+            error: error.message
         });
     }
 };
@@ -48,24 +48,34 @@ export const getUserTasks = async (req, res) => {
 };
 
 //  Update Task (Assigned User or Manager)
-export const updateTask = async (req, res) => {
+export const updateTaskStatus = async (req, res) => {
     try {
-        const task = await taskService.updateTask( 
-            req.params.id,
-            req.user.id,
-            req.user.role,
-            req.body
-        );
-        res.json(task);
+        const taskId = req.params.id;
+        const userId = req.user.id; 
+        const { status } = req.body;
+
+        console.log("taskId",taskId);
+
+        if (!status) {
+            return res.status(400).json({ success: false, error: "Status is required" });
+        }
+
+        const updatedTask = await taskService.updateTask(taskId, userId, { status });
+
+        res.json({
+            success: true,
+            data: updatedTask,
+            message: "Task status updated successfully"
+        });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ success: false, error: error.message });
     }
 };
 
 // Delete Task (Manager Only)
 export const deleteTask = async (req, res) => {
     try {
-        await taskService.deleteTask(req.params.id); 
+        await taskService.deleteTask(req.params.id);
         res.json({ message: "Task deleted successfully" });
     } catch (error) {
         res.status(400).json({ error: error.message });

@@ -22,7 +22,8 @@ function DashBoard() {
   const [showInvitationDialog, setShowInvitationDialog] = useState(false);
   const [projectDetails, setProjectDetails] = useState({});
   const [tasks, setTasks] = useState({}); // Store tasks for each project
-  const [showTasksDialog, setShowTasksDialog] = useState({}); // Control tasks dialog visibility
+  const [showTasksDialog, setShowTasksDialog] = useState({});
+  const [selectedProjectId, setSelectedProjectId] = useState(null); // Track the selected project for tasks// Control tasks dialog visibility
 
   useEffect(() => {
     if (
@@ -168,6 +169,14 @@ function DashBoard() {
     setTaskInputs(prev => ({
       ...prev,
       [projectId]: { ...prev[projectId], show: false }
+    }));
+  };
+
+  const showProjectTasks = (projectId) => {
+    setSelectedProjectId(projectId);
+    setMenuOpen(prev => ({
+      ...prev,
+      [projectId]: false
     }));
   };
 
@@ -330,7 +339,7 @@ function DashBoard() {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:5555/invitations', {
+      const response = await fetch('http://localhost:5555/api/invite/', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -359,11 +368,11 @@ function DashBoard() {
     try {
       const token = cookies.get("token");
 
-      if (!token || !userId) {
+      if (!token) {
         throw new Error('Authentication error');
       }
 
-      const response = await fetch(`http://localhost:5555/api/invite/accept`, {
+      const response = await fetch(`http://localhost:5555/api/invite/accept/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -470,8 +479,8 @@ function DashBoard() {
           <RiAccountCircleLine className='profile-icon' />
         </div>
       </div>
-      <div style={{ display: "flex", alignItems: "center" , padding:"100px"}}>
-        <CardLayout />
+      <div style={{ display: "flex", alignItems: "center", padding: "100px" }}>
+        <CardLayout projectId={selectedProjectId} />
       </div>
       <Carousel />
       <div className="dashboard-leftbar">
@@ -498,7 +507,7 @@ function DashBoard() {
                   <button onClick={() => toggleTaskAssign(project._id)} className="menu-option">
                     Assign Task
                   </button>
-                  <button onClick={() => toggleShowTasks(project._id)} className="menu-option">
+                  <button onClick={() => showProjectTasks(project._id)} className="menu-option">
                     Show My Tasks
                   </button>
                 </div>
@@ -587,7 +596,7 @@ function DashBoard() {
                   </div>
                 </>
               )}
-              {showTasksDialog[project._id] && (
+              {/* {showTasksDialog[project._id] && (
                 <>
                   <div className="overlay" onClick={() => toggleShowTasks(project._id)} />
                   <div className="invite-modal">
@@ -609,7 +618,7 @@ function DashBoard() {
                     </div>
                   </div>
                 </>
-              )}
+              )} */}
             </div>
           ))}
         </div>
