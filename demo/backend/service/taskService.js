@@ -39,16 +39,21 @@ const createTask = async ({ title, description, projectId, assignedTo, priority,
     return await task.save();
 };
 
-// ✅ Get All Tasks in a Project
-const getProjectTasks = async (projectId) => {
+
+const getProjectTasks = async (projectId, userId) => {
     if (!mongoose.Types.ObjectId.isValid(projectId)) {
         throw new Error("Invalid project ID");
     }
 
-    return await Task.find({ projectId }).populate("assignedTo", "name email");
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        throw new Error("Invalid user ID");
+    }
+
+    return await Task.find({ projectId, assignedTo: userId })
+        .populate("assignedTo", "name email");
 };
 
-// ✅ Get Tasks Assigned to a User
+
 const getUserTasks = async (userId) => {
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         throw new Error("Invalid user ID");

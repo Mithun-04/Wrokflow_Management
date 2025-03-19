@@ -63,8 +63,8 @@ const getProjects = async (userId) => {
 
 const getProjectDetails = async (projectId, userId) => {
     const project = await Project.findById(projectId)
-        .populate('manager', 'username email')
-        .populate('members.userId', 'username email');
+        .populate('manager', 'name email')
+        .populate('members.userId', 'name email');
 
     if (!project) {
         throw new Error('Project not found');

@@ -18,13 +18,22 @@ export const createTask = async (req, res) => {
     }
 };
 
-// Get All Tasks in a Project
 export const getProjectTasks = async (req, res) => {
     try {
-        const tasks = await taskService.getProjectTasks(req.params.projectId); 
-        res.json(tasks);
+        const projectId = req.params.projectId;
+        const userId = req.user.id; 
+
+        const tasks = await taskService.getProjectTasks(projectId, userId);
+        res.json({
+            success: true,
+            data: tasks,
+            message: 'Tasks retrieved successfully'
+        });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ 
+            success: false,
+            error: error.message 
+        });
     }
 };
 
