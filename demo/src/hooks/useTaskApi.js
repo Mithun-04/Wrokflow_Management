@@ -10,15 +10,26 @@ export const useTaskApi = () => {
   };
 
   // Fetch all tasks assigned to the user
-  const getUserTasks = async () => {
-    const res = await axios.get(`${API_URL}/user`, config);
-    return res.data;
+  const getUserTasks = async (userId) => {
+    try {
+      // Pass the userId as a query parameter
+      const res = await axios.get(`${API_URL}?userId=${userId}`, config);
+      return res.data;
+    } catch (error) {
+      console.error("Error fetching user tasks:", error);
+      throw error;
+    }
   };
 
   // Update Task Status
   const updateTaskStatus = async (taskId, newStatus) => {
-    const res = await axios.put(`${API_URL}/${taskId}`, { status: newStatus }, config);
-    return res.data;
+    try {
+      const res = await axios.put(`${API_URL}/${taskId}`, { status: newStatus }, config);
+      return res.data;
+    } catch (error) {
+      console.error("Error updating task status:", error);
+      throw error;
+    }
   };
 
   return { getUserTasks, updateTaskStatus };
