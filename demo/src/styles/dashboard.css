@@ -58,12 +58,17 @@
     box-shadow: 6px 0px 8px rgba(0, 0, 0, 0.4); 
 }
 
-/* Icon styles */
 .icons {
-    margin-left: calc(80%);
+    margin-left: calc(75%);
     align-items: center;
-    display: inline-flex;
+    display: flex;
     gap: 25px;
+}
+
+
+.inbox{
+  width:40px;
+  height : 40px;
 }
 
 .profile-icon {

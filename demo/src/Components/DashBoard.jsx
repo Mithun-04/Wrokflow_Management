@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import '../styles/DashBoard.css';
 import { RiAccountCircleLine } from "react-icons/ri";
+import { GoInbox } from "react-icons/go";
 import CardLayout from './Taskprogress';
 import Carousel from './projects';
 import addicon from '../assets/add.png';
@@ -13,8 +14,10 @@ function DashBoard() {
   const [username, setUsername] = useState('');
   const [modal, setModal] = useState(false);
   const [projects, setProjects] = useState([]);
-  const [inviteInputs, setInviteInputs] = useState({}); // Track invite form state
+  const [inviteInputs, setInviteInputs] = useState({});
   const [error, setError] = useState(null);
+  const [invitations, setInvitations] = useState([]);
+  const [showInvitationDialog, setShowInvitationDialog] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -50,12 +53,12 @@ function DashBoard() {
   }, []);
 
   useEffect(() => {
-    if (modal) {
+    if (modal || showInvitationDialog) {
       document.body.classList.add('no-scroll');
     } else {
       document.body.classList.remove('no-scroll');
     }
-  }, [modal]);
+  }, [modal, showInvitationDialog]);
 
   const fetchProject = async () => {
     try {
@@ -83,7 +86,7 @@ function DashBoard() {
       const data = await response.json();
       setProjects(data.data || []);
       setError(null);
-      setInviteInputs({}); // Reset invite inputs when fetching new projects
+      setInviteInputs({});
     } catch (error) {
       console.error('Error fetching projects:', error);
       setError('Error loading projects');
@@ -156,11 +159,102 @@ function DashBoard() {
     }));
   };
 
+  const fetchUserInvitations = async () => {
+    try {
+      const token = cookies.get("token");
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await fetch('http://localhost:5555/api/invite/', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch invitations');
+      }
+
+      const data = await response.json();
+      console.log('Fetched invitations:', data);
+
+      const invitationList = Array.isArray(data.data) ? data.data : Array.isArray(data) ? data : [];
+      setInvitations(invitationList);
+      setShowInvitationDialog(true);
+    } catch (error) {
+      console.error('Error fetching invitations:', error);
+      setError('Failed to load invitations');
+      setInvitations([]);
+    }
+  };
+
+  const handleAcceptInvitation = async (invitationId) => {
+    try {
+      const token = cookies.get("token");
+      // const userId = /* Extract userId from token or profile */;
+      if (!token) {
+        throw new Error('Authentication error');
+      }
+
+      const response = await fetch(`http://localhost:5555/api/invite/accept`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({invitationId })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to accept invitation');
+      }
+
+      setInvitations(prev => prev.filter(inv => inv._id !== invitationId));
+      alert('Invitation accepted successfully!');
+    } catch (error) {
+      console.error('Error accepting invitation:', error);
+      alert(`Failed to accept invitation: ${error.message}`);
+    }
+  };
+
+  const handleDeclineInvitation = async (invitationId) => {
+    try {
+      const token = cookies.get("token");
+      // const userId = /* Extract userId from token or profile */;
+      if (!token) {
+        throw new Error('Authentication error');
+      }
+
+      const response = await fetch(`http://localhost:5555/api/invite/decline`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({invitationId})
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to decline invitation');
+      }
+
+      setInvitations(prev => prev.filter(inv => inv._id !== invitationId));
+      alert('Invitation declined successfully!');
+    } catch (error) {
+      console.error('Error declining invitation:', error);
+      alert(`Failed to decline invitation: ${error.message}`);
+    }
+  };
+
   return (
     <div className='dashboard-container'>
       <div className='dashboard-topbar'>
         <h1>{username}'s Dashboard</h1>
         <div className='icons'>
+          <GoInbox className='inbox' onClick={fetchUserInvitations} />
           <div className='addicon' onClick={() => setModal(true)}>
             <img src={addicon} alt="Add" />
           </div>
@@ -170,7 +264,7 @@ function DashBoard() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <CardLayout />
       </div>
-      <Carousel />
+      {/* <Carousel /> */}
       <div className="dashboard-leftbar">
         <button className='button' onClick={fetchProject}>
           Show my Projects
@@ -213,6 +307,42 @@ function DashBoard() {
           ))}
         </div>
       </div>
+      {showInvitationDialog && (
+        <>
+          <div className="overlay" onClick={() => setShowInvitationDialog(false)} />
+          <div className="invite-modal">
+            <h2>Pending Invitations</h2>
+            {Array.isArray(invitations) && invitations.length === 0 ? (
+              <p>No pending invitations</p>
+            ) : (
+              Array.isArray(invitations) ? (
+                invitations.map(invitation => (
+                  <div key={invitation._id} className="invitation-item">
+                    <p>Project: {invitation.projectId?.name || invitation.projectId?._id || 'Unknown'}</p>
+                    <p>Role: {invitation.role}</p>
+                    <div className="invitation-actions">
+                      <button
+                        onClick={() => handleAcceptInvitation(invitation._id)}
+                        className="invite-button accept"
+                      >
+                        Accept
+                      </button>
+                      <button
+                        onClick={() => handleDeclineInvitation(invitation._id)}
+                        className="invite-button decline"
+                      >
+                        Decline
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>Error: Invalid invitation data</p>
+              )
+            )}
+          </div>
+        </>
+      )}
       {modal && <Popup setModal={setModal} />}
     </div>
   );
