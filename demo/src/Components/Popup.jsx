@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/popup.css";
 import Cookies from "universal-cookie";
+import toast from "react-hot-toast"
 
 const cookies = new Cookies();
 
@@ -23,12 +24,12 @@ function Popup({ setModal }) {
 
       const data = await response.json();
       
-      if (!response.ok) {
-        alert(data.msg || "Project Creation failed");
-        return;
+      if (response.ok) {
+          toast.success("Project created successfully");
       }
       setModal(false);
     } catch (err) {
+      toast.error(`Project is not created ${err.message}`)
       setError(err.message);
     }
   };

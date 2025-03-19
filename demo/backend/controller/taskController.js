@@ -10,7 +10,7 @@ export const createTask = async (req, res) => {
             assignedTo: req.body.assignedTo,
             priority: req.body.priority,
             dueDate: req.body.dueDate,
-            createdBy: req.user.id, // Manager ID
+            createdBy: req.user.id, 
         });
         res.status(201).json(task);
     } catch (error) {
