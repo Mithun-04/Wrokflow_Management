@@ -63,28 +63,10 @@ const getUserTasks = async (userId) => {
     return await Task.find({ assignedTo: userId });
 };
 
-<<<<<<< HEAD
-// ✅ Update Task (Only Assigned User or Manager)
 const updateTask = async (taskId, userId, updateData) => {
-    if (!mongoose.Types.ObjectId.isValid(taskId)) {
-        throw new Error("Invalid task ID");
-    }
-=======
-const updateTask = async (taskId, userId, updateData) => {
->>>>>>> e928d51bba876a991f60ae84757f64adf6b0608b
 
     console.log(taskId);
     const task = await Task.findById(taskId);
-<<<<<<< HEAD
-    if (!task) throw new Error("Task not found");
-
-    // Allow only assigned user to update
-    if (task.assignedTo?.toString() !== userId.toString()) {
-        throw new Error("Access denied: Only the assigned user can update this task");
-    }
-
-    // Validate status
-=======
     if (!task) {
         throw new Error("Task not found");
     }
@@ -94,27 +76,17 @@ const updateTask = async (taskId, userId, updateData) => {
     }
 
    
->>>>>>> e928d51bba876a991f60ae84757f64adf6b0608b
     if (updateData.status) {
         const validStatuses = ["to-do", "on-progress", "done"];
         if (!validStatuses.includes(updateData.status)) {
             throw new Error(`Invalid status. Must be one of: ${validStatuses.join(", ")}`);
         }
-<<<<<<< HEAD
-        
-        // Update task status
-        task.status = updateData.status;
-    }
-
-    return await task.save(); // Save updated task
-=======
     }
 
     task.status = updateData.status;
     const updatedTask = await task.save();
 
     return updatedTask;
->>>>>>> e928d51bba876a991f60ae84757f64adf6b0608b
 };
 
 // ✅ Delete Task (Manager Only)

@@ -482,7 +482,6 @@ function DashBoard() {
       <div style={{ display: "flex", alignItems: "center", padding: "100px" }}>
         <CardLayout projectId={selectedProjectId} />
       </div>
-      <Carousel />
       <div className="dashboard-leftbar">
         <button className='button' onClick={fetchProject}>
           Show my Projects
