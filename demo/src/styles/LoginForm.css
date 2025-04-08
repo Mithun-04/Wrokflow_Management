@@ -1,65 +1,74 @@
-.wrapper1{
+.wrapper1 {
     background-color: transparent;
     backdrop-filter: blur(20px);
-    box-shadow: 0 0 10px rgba(0 , 0 , 0, .2);
-    border: 2px solid rgba(0 , 0 , 0, .2);
-    width: 375px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    border: 2px solid rgba(0, 0, 0, .2);
+    width: 90%; /* Changed from fixed width */
+    max-width: 375px; /* Added max-width instead */
     border: 1px solid rgba(255, 255, 255, .2);
     padding: 30px 40px;
     padding-bottom: 50px;
     border-radius: 10px;
-    height: 330px;
+    height: auto; /* Changed from fixed height */
+    min-height: 330px; /* Added min-height instead */
+    margin: 0 auto; /* Center the wrapper */
+    box-sizing: border-box; /* Include padding in width calculations */
 }
 
-.wrapper1.signup{
-    height: 420px;
-    width: 360px;
+.wrapper1.signup {
+    min-height: 420px; /* Changed from fixed height */
+    max-width: 360px; /* Changed from fixed width */
 }
 
-
-
-.wrapper1 .input-box{
+.wrapper1 .input-box {
     background-color: transparent;
     margin: 30px 0px;
-    height: 50px; 
+    height: 50px;
     width: 100%;
     display: flex;
 }
 
-.input-box input{
-    width: 98.5%;
+.input-box input {
+    width: 100%; /* Changed from 98.5% */
     height: 100%;
     border: 2px solid rgba(197, 189, 189, 0.2);
-    background : transparent;
+    background: transparent;
     border-radius: 40px;
     outline: none;
-    padding-left: 1rem;  
-    padding-right: 3rem; 
+    padding-left: 1rem;
+    padding-right: 3rem;
     color: #ffffff;
-    font-size: 17px;
+    font-size: 16px; /* Slightly smaller for mobile */
+    box-sizing: border-box; /* Include padding in width calculations */
 }
 
-.wrapper1 h1{
+.wrapper1 h1 {
     color: #ffffff;
+    font-size: 1.8rem; /* Responsive font size */
+    text-align: center; /* Center alignment for better mobile view */
 }
 
-.input-box ::placeholder{
+.input-box ::placeholder {
     color: rgb(255, 255, 255);
 }
 
-.input-box .icon{
-    position: relative;
-    top: 20px;
-    right: 35px;
+.input-box .icon {
+    position: absolute; /* Changed from relative */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Center vertically */
+    right: 15px; /* Adjusted positioning */
     cursor: pointer;
     color: #ffffff;
 }
 
+.input-box {
+    position: relative; /* Added for absolute positioning of icon */
+}
 
-.wrapper1 button{
-    width: 98.5%;
-    height : 45px;
-    font-size: 17px;
+.wrapper1 button {
+    width: 100%; /* Changed from 98.5% */
+    height: 45px;
+    font-size: 16px; /* Slightly smaller for mobile */
     border-radius: 40px;
     background-color: white;
     color: black;
@@ -69,23 +78,45 @@
     font-weight: 700;
 }
 
-.new{
+.new {
     display: flex;
     position: relative;
-    margin-top: 10px;
-    justify-content: space-evenly;
+    margin-top: 15px;
+    justify-content: center; /* Changed from space-evenly */
     align-items: center;
     color: #ffffff;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    gap: 5px; /* Add spacing between elements */
 }
 
-.new  button {  
+.new button {
     background: none;
     border: none;
     color: violet;
     cursor: pointer;
     text-decoration: underline;
-    width: max-content;
-    
+    width: auto; /* Changed from max-content */
+    font-size: 14px; /* Slightly smaller for mobile */
+    padding: 5px;
 }
 
-
+/* Added media queries for better mobile responsiveness */
+@media screen and (max-width: 480px) {
+    .wrapper1 {
+        padding: 20px 25px;
+        padding-bottom: 40px;
+    }
+    
+    .wrapper1 h1 {
+        font-size: 1.5rem;
+    }
+    
+    .input-box input {
+        font-size: 14px;
+    }
+    
+    .wrapper1 button {
+        font-size: 15px;
+        height: 40px;
+    }
+}

@@ -1,346 +1,128 @@
+/* Base Styles */
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
 
-.dashboard-container{
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0; 
-    margin-left: 250px; /* Prevents content from going under the left sidebar */
-    margin-top: 80px; /* Prevents content from going under the top bar */
-    height: 100%;
-    width: 100%;
-    z-index: 998; /* Keep it below the sidebar */
+/* Dashboard Layout */
+.dashboard-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 250px;
+  margin-top: 80px;
+  height: 100%;
+  width: calc(100% - 250px);
+  z-index: 998;
 }
 
 .dashboard-container h1 {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin-left: 20px;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-left: 20px;
 }
 
-/* Top bar styling */
+/* Top Bar */
 .dashboard-topbar {
-    position: fixed; /* Ensures it stays on top */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 80px;
-    background: #1e1e1e;
-    color: aliceblue;
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    padding: 0 20px;
-    z-index: 1001; /* Higher than leftbar */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: #1e1e1e;
+  color: aliceblue;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1001;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  flex-wrap: wrap;
 }
 
+.dashboard-topbar:hover {
+  height: 85px;
+  box-shadow: 6px 0px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Left Sidebar */
 .dashboard-leftbar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 250px;
-    height: 100%;
-    background-color: #1e1e1e;
-    z-index: 1000; /* Lower than topbar */
-    box-shadow: 4px 0px 6px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #1e1e1e;
+  z-index: 1000;
+  padding: 20px;
+  box-shadow: 4px 0px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
-
 
 .dashboard-leftbar:hover {
-    width: 260px; 
-    box-shadow: 6px 0px 8px rgba(0, 0, 0, 0.4); 
-}
-.dashboard-topbar:hover {
-    height: 85px; 
-    box-shadow: 6px 0px 8px rgba(0, 0, 0, 0.4); 
+  width: 260px;
+  box-shadow: 6px 0px 8px rgba(0, 0, 0, 0.4);
 }
 
+/* Icons */
 .icons {
-    margin-left: calc(75%);
-    align-items: center;
-    display: flex;
-    gap: 25px;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: nowrap;
 }
 
-
-.inbox{
-  width:40px;
-  height : 40px;
+.inbox {
+  width: 30px;
+  height: 30px;
 }
 
 .profile-icon {
-    color: white;
-    width: 50px;
-    height: 50px;
+  width: 40px;
+  height: 40px;
+  color: white;
 }
 
 .addicon {
-    width: 50px; 
-    height: 50px;
-    display: inline-block;
-    overflow: hidden;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  overflow: hidden;
 }
 
 .addicon img {
-    width: 100%; 
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
-body.no-scroll {
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
+/* Button Styles */
+.button {
+  margin-top: 100px;
+  margin-left: 20px;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 15px;
 }
 
-.button{
-    margin-top: 100px;
-    margin-left: 20px;
-    display: inline-block;
-    padding: 9px 27px;
-    background: transparent;
-    border: 2px solid white;
-    border-radius: 7px;
-    color: white;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 500;
+.button:hover {
+  background-color: #0056b3;
 }
 
+/* Projects Section */
 #projectsContainer {
-    margin-top: 20px;
-  }
-  
-  .project-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    color: white;
-  }
-  
-  button {
-    padding: 10px 20px;
-    cursor: pointer;
-  }
+  margin-top: 20px;
+}
 
-
-  .project-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .menu-dots {
-    cursor: pointer;
-    font-size: 20px;
-    padding: 0 10px;
-  }
-
-  .invite-container {
-    margin-top: 10px;
-  }
-
-  .invite-container input {
-    padding: 5px;
-    margin-right: 5px;
-  }
-
-  .invite-container button {
-    padding: 5px 10px;
-  }
-
-  button {
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-
-  /* DashBoard.css */
-.project-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    background-color: #1a1a1a; /* Match your dark theme */
-    color: #fff;
-  }
-  
-  .menu-dots {
-    cursor: pointer;
-    font-size: 20px;
-    padding: 0 10px;
-    color: #fff;
-  }
-  
-  .invite-dropdown {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 5px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-    width: 250px;
-    padding: 10px;
-  }
-  
-  .invite-content {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  
-  .invite-input {
-    flex-grow: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .invite-button {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .invite-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .dashboard-leftbar {
-    padding: 20px;
-  }
-  
-  .button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 15px;
-  }
-  
-  .button:hover {
-    background-color: #0056b3;
-  }
-  
-  .no-scroll {
-    overflow: hidden;
-  }
-
-  /* DashBoard.css */
-.project-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    background-color: #1a1a1a;
-    color: #fff;
-  }
-  
-  .menu-dots {
-    cursor: pointer;
-    font-size: 20px;
-    padding: 0 10px;
-    color: #fff;
-  }
-  
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-    z-index: 1000;
-  }
-  
-  .invite-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    z-index: 1001;
-    padding: 20px;
-    width: 300px;
-    text-align: center;
-  }
-  
-  .invite-content {
-    display: flex;
-    flex-direction: column; /* Stack input and button vertically */
-    gap: 15px; /* Space between input and button */
-  }
-  
-  .invite-input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  .invite-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .invite-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .dashboard-leftbar {
-    padding: 20px;
-  }
-  
-  .button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 15px;
-  }
-  
-  .button:hover {
-    background-color: #0056b3;
-  }
-  
-  .no-scroll {
-    overflow: hidden;
-  }
-
-  /* DashBoard.css */
 .project-item {
   border: 1px solid #ccc;
   padding: 10px;
@@ -354,6 +136,7 @@ body.no-scroll {
   color: #fff;
 }
 
+/* Three-dot menu */
 .menu-dots {
   cursor: pointer;
   font-size: 20px;
@@ -375,18 +158,19 @@ body.no-scroll {
 
 .menu-option {
   padding: 10px 15px;
-  border: none;
   background: none;
   text-align: left;
   cursor: pointer;
   font-size: 14px;
   color: #333;
+  border: none;
 }
 
 .menu-option:hover {
   background-color: #f0f0f0;
 }
 
+/* Overlay */
 .overlay {
   position: fixed;
   top: 0;
@@ -397,6 +181,7 @@ body.no-scroll {
   z-index: 1000;
 }
 
+/* Invite Modal */
 .invite-modal {
   position: fixed;
   top: 50%;
@@ -411,6 +196,7 @@ body.no-scroll {
   text-align: center;
 }
 
+/* Invite Form Content */
 .invite-content {
   display: flex;
   flex-direction: column;
@@ -419,11 +205,11 @@ body.no-scroll {
 
 .invite-input {
   padding: 10px;
+  padding-left: 0;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
   width: 100%;
-  padding-left: 0;
 }
 
 .task-description {
@@ -431,95 +217,62 @@ body.no-scroll {
   resize: none;
 }
 
+/* Invite Button */
 .invite-button {
   padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  background-color: #007bff;
-  color: #fff;
 }
 
 .invite-button:hover {
   background-color: #0056b3;
 }
 
-.invite-button.accept {
-  background-color: #28a745;
-}
+/* ------------------------ */
+/* 📱 Mobile Responsive Fix */
+/* ------------------------ */
+@media (max-width: 768px) {
+  .dashboard-container {
+    margin-left: 0;
+    width: 100%;
+  }
 
-.invite-button.accept:hover {
-  background-color: #218838;
-}
+  .dashboard-leftbar {
+    display: none;
+  }
 
-.invite-button.decline {
-  background-color: #dc3545;
-  margin-left: 10px;
-}
+  .dashboard-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 10px;
+  }
 
-.invite-button.decline:hover {
-  background-color: #c82333;
-}
+  .icons {
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 10px;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
 
-.invitation-item {
-  margin-bottom: 15px;
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-}
+  .dashboard-container h1 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
 
-.invitation-actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
-}
+  .button {
+    margin-top: 20px;
+    margin-left: 10px;
+  }
 
-.dashboard-leftbar {
-  padding: 20px;
-}
-
-.button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 15px;
-}
-
-.button:hover {
-  background-color: #0056b3;
-}
-
-.inbox {
-  font-size: 24px;
-  cursor: pointer;
-  margin-right: 15px;
-  color: #fff;
-}
-
-.no-scroll {
-  overflow: hidden;
-}
-
-.task-item {
-  border-bottom: 1px solid #ccc;
-  padding: 10px 0;
-  margin-bottom: 10px;
-}
-
-.task-item:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-}
-
-.task-item p {
-  margin: 5px 0;
-  color: black;
-}
-
-.task-item strong {
-  color: #333;
+  .project-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
 }
