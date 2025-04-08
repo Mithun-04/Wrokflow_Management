@@ -34,26 +34,27 @@ const createTask = async ({ title, description, projectId, assignedTo, priority,
         priority,
         dueDate,
         createdBy,
+        status: "to-do", // Set default status explicitly to match validation
     });
 
     return await task.save();
 };
 
+// ✅ Get Project Tasks
+// const getProjectTasks = async (projectId, userId) => {
+//     if (!mongoose.Types.ObjectId.isValid(projectId)) {
+//         throw new Error("Invalid project ID");
+//     }
 
-const getProjectTasks = async (projectId, userId) => {
-    if (!mongoose.Types.ObjectId.isValid(projectId)) {
-        throw new Error("Invalid project ID");
-    }
+//     if (!mongoose.Types.ObjectId.isValid(userId)) {
+//         throw new Error("Invalid user ID");
+//     }
 
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-        throw new Error("Invalid user ID");
-    }
+//     return await Task.find({ projectId, assignedTo: userId })
+//         .populate("assignedTo", "name email");
+// };
 
-    return await Task.find({ projectId, assignedTo: userId })
-        .populate("assignedTo", "name email");
-};
-
-
+// ✅ Get User Tasks
 const getUserTasks = async (userId) => {
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         throw new Error("Invalid user ID");
@@ -63,7 +64,7 @@ const getUserTasks = async (userId) => {
 };
 
 // ✅ Update Task (Only Assigned User or Manager)
-const updateTask = async (taskId, userId, userRole, updateData) => {
+const updateTask = async (taskId, userId, updateData) => {
     if (!mongoose.Types.ObjectId.isValid(taskId)) {
         throw new Error("Invalid task ID");
     }
@@ -71,17 +72,24 @@ const updateTask = async (taskId, userId, userRole, updateData) => {
     const task = await Task.findById(taskId);
     if (!task) throw new Error("Task not found");
 
-    // Allow only assigned user or manager to update
-    if (task.assignedTo?.toString() !== userId && userRole !== "manager") {
-        throw new Error("Access denied");
+    // Allow only assigned user to update
+    if (task.assignedTo?.toString() !== userId.toString()) {
+        throw new Error("Access denied: Only the assigned user can update this task");
     }
 
-    // Update task status
-    task.status = updateData.status; // Assign new status
+    // Validate status
+    if (updateData.status) {
+        const validStatuses = ["to-do", "on-progress", "done"];
+        if (!validStatuses.includes(updateData.status)) {
+            throw new Error(`Invalid status. Must be one of: ${validStatuses.join(", ")}`);
+        }
+        
+        // Update task status
+        task.status = updateData.status;
+    }
 
     return await task.save(); // Save updated task
 };
-
 
 // ✅ Delete Task (Manager Only)
 const deleteTask = async (taskId, userId, userRole) => {
@@ -103,7 +111,7 @@ const deleteTask = async (taskId, userId, userRole) => {
 // ✅ Export All Functions
 export default {
     createTask,
-    getProjectTasks,
+    
     getUserTasks,
     updateTask,
     deleteTask,
