@@ -3,31 +3,32 @@ import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
-const CardLayout = () => {
+const CardLayout = ({ projectId = null }) => {
   const [todoTasks, setTodoTasks] = useState([]);
   const [ongoingTasks, setOngoingTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [deadlines, setDeadlines] = useState([]); // Stores tasks with due dates
 
   // Fetch tasks for the user in the specified project
-  const fetchUserTasks = async () => {
+  const fetchUserTasks = async (projectId) => {
     try {
-        const token = cookies.get("token");
-        if (!token) {
-            throw new Error('No authentication token found');
+      const token = cookies.get("token");
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      // If projectId is null, we can skip fetching or fetch all tasks (optional)
+      if (!projectId) {
+        return []; // Return empty array if no projectId is provided
+      }
+
+      const response = await fetch(`http://localhost:5555/api/tasks/${projectId}/`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
-
-        // Decode the JWT token to extract userId
-        const payload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
-        const userId = payload.id; // Ensure the token contains `id`
-
-        const response = await fetch(`http://localhost:5555/api/tasks/user`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -49,7 +50,7 @@ const CardLayout = () => {
     }
   };
 
-  // Update task status (e.g., to "on-progress" or "done")
+  // Update task status (e.g., to "on-progress" or "completed")
   const updateTaskStatus = async (taskId, status) => {
     try {
       const token = cookies.get("token");
@@ -57,7 +58,7 @@ const CardLayout = () => {
         throw new Error('No authentication token found');
       }
 
-      console.log("Updating taskId:", taskId, "to status:", status);
+      console.log("taskId:",taskId);
 
       const response = await fetch(`http://localhost:5555/api/tasks/${taskId}`, {
         method: 'PUT',
@@ -80,12 +81,12 @@ const CardLayout = () => {
     }
   };
 
-  // Fetch tasks when the component mounts
+  // Fetch tasks when the component mounts or projectId changes
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const tasks = await fetchUserTasks();
-        setTodoTasks(tasks.filter((t) => t.status === "to-do"));
+        const tasks = await fetchUserTasks(projectId);
+        setTodoTasks(tasks.filter((t) => t.status === "todo"));
         setOngoingTasks(tasks.filter((t) => t.status === "on-progress"));
         setCompletedTasks(tasks.filter((t) => t.status === "done"));
         setDeadlines(tasks.filter((t) => t.dueDate)); // Filter tasks with due dates
@@ -98,9 +99,9 @@ const CardLayout = () => {
       }
     };
     fetchTasks();
-  }, []); // Empty dependency array to fetch only on mount
+  }, [projectId]); // Re-fetch tasks when projectId changes
 
-  // Move task to "On Progress"
+
   const startTask = async (task) => {
     try {
       await updateTaskStatus(task._id, "on-progress");
@@ -116,7 +117,7 @@ const CardLayout = () => {
     try {
       await updateTaskStatus(task._id, "done");
       setOngoingTasks((prev) => prev.filter((t) => t._id !== task._id));
-      setCompletedTasks((prev) => [...prev, { ...task, status: "done" }]);
+      setCompletedTasks((prev) => [...prev, { ...task, status: "completed" }]);
     } catch (error) {
       console.error('Error marking task as completed:', error);
     }
