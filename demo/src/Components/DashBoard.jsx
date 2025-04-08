@@ -81,6 +81,13 @@ function DashBoard() {
     }
   }, [modal, showInvitationDialog, inviteInputs, taskInputs]);
 
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+
+  const handleToggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
+
+
   const fetchProject = async () => {
     try {
       const token = cookies.get("token");
@@ -472,6 +479,13 @@ function DashBoard() {
       <div className='dashboard-topbar'>
         <h1>{username}'s Dashboard</h1>
         <div className='icons'>
+        <button
+          id="sidebarToggle"
+          onClick={handleToggleSidebar}
+          className="toggle-button"
+        >
+          ☰
+        </button>
           <GoInbox className='inbox' onClick={fetchUserInvitations} />
           <div className='addicon' onClick={() => setModal(true)}>
             <img src={addicon} alt="Add" />
@@ -482,7 +496,7 @@ function DashBoard() {
       <div style={{ display: "flex", alignItems: "center", padding: "100px" }}>
         <CardLayout projectId={selectedProjectId} />
       </div>
-      <div className="dashboard-leftbar">
+      <div className={`dashboard-leftbar ${!isSidebarVisible ? "mobile-hidden" : ""}`}>
         <button className='button' onClick={fetchProject}>
           Show my Projects
         </button>
