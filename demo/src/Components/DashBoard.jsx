@@ -478,7 +478,7 @@ function DashBoard() {
           <div className='addicon' onClick={() => setModal(true)}>
             <img src={addicon} alt="Add" />
           </div>
-          <RiAccountCircleLine className='profile-icon' />
+         {/* <RiAccountCircleLine className='profile-icon'  /> */}
         </div>
       </div>
       <div style={{ display: "flex", alignItems: "center", padding: "100px" }}>
