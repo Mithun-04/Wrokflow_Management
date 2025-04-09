@@ -34,7 +34,7 @@ const createTask = async ({ title, description, projectId, assignedTo, priority,
         priority,
         dueDate,
         createdBy,
-        status: "to-do", // Set default status explicitly to match validation
+        status: "todo", // Set default status explicitly to match validation
     });
 
     return await task.save();
