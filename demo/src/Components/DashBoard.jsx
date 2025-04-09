@@ -105,6 +105,8 @@ function DashBoard() {
       }
 
       const data = await response.json();
+      console.log(data);
+
       setProjects(data.data || []);
       setError(null);
       setInviteInputs({});
@@ -482,7 +484,7 @@ function DashBoard() {
       <div style={{ display: "flex", alignItems: "center", padding: "100px" }}>
         <CardLayout projectId={selectedProjectId} />
       </div>
-      <Carousel />
+      {/* <Carousel /> */}
       <div className="dashboard-leftbar">
         <button className='button' onClick={fetchProject}>
           Show my Projects
@@ -501,15 +503,23 @@ function DashBoard() {
               </span>
               {menuOpen[project._id] && (
                 <div className="action-menu">
-                  <button onClick={() => toggleInvite(project._id)} className="menu-option">
-                    Invite Members
-                  </button>
-                  <button onClick={() => toggleTaskAssign(project._id)} className="menu-option">
-                    Assign Task
-                  </button>
-                  <button onClick={() => showProjectTasks(project._id)} className="menu-option">
-                    Show My Tasks
-                  </button>
+                  {project.isManager ? (<>
+                    <button onClick={() => toggleInvite(project._id)} className="menu-option">
+                      Invite Members
+                    </button>
+                    <button onClick={() => toggleTaskAssign(project._id)} className="menu-option">
+                      Assign Task
+                    </button>
+                    <button onClick={() => showProjectTasks(project._id)} className="menu-option">
+                      Show My Tasks
+                    </button>
+                  </>
+                  ) : (
+                    <button onClick={() => showProjectTasks(project._id)} className="menu-option">
+                      Show My Tasks
+                    </button>
+                  )
+                  }
                 </div>
               )}
               {inviteInputs[project._id]?.show && (
@@ -596,29 +606,6 @@ function DashBoard() {
                   </div>
                 </>
               )}
-              {/* {showTasksDialog[project._id] && (
-                <>
-                  <div className="overlay" onClick={() => toggleShowTasks(project._id)} />
-                  <div className="invite-modal">
-                    <div className="invite-content">
-                      <h2>My Tasks in {project.name}</h2>
-                      {tasks[project._id]?.length > 0 ? (
-                        tasks[project._id].map(task => (
-                          <div key={task._id} className="task-item">
-                            <p><strong>Title:</strong> {task.title}</p>
-                            <p><strong>Description:</strong> {task.description}</p>
-                            <p><strong>Assigned To:</strong> {task.assignedTo?.name || task.assignedTo?.email || 'Unknown'}</p>
-                            <p><strong>Priority:</strong> {task.priority || 'Not set'}</p>
-                            <p><strong>Due Date:</strong> {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'Not set'}</p>
-                          </div>
-                        ))
-                      ) : (
-                        <p>No tasks assigned to you in this project.</p>
-                      )}
-                    </div>
-                  </div>
-                </>
-              )} */}
             </div>
           ))}
         </div>
