@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 import Project from "../models/Project.js";
-import Invitation from "../models/Invitation.js"; 
+import Invitation from "../models/Invitation.js";
 import mongoose from "mongoose";
 
 const createProject = async ({ name, managerId }) => {
@@ -41,23 +41,19 @@ const getProjects = async (userId) => {
             { manager: userId },
             { 'members.userId': userId }
         ],
-    }).select('_id name');
-    // const projects = await Project.find({
-    //     $or: [
-    //         { manager: userId },
-    //         { 'members.userId': userId }
-    //     ],
-    // }).populate('manager', 'name email')
-    //     .populate('members.userId', 'name email');
+    }).select('_id name manager').lean();
 
-    // console.log('Found projects:', projects); // Log the raw results
+    const transformedProjects = projects.map(project => ({
+        _id: project._id,
+        name: project.name,
+        isManager: project.manager.toString() === userId.toString()
+    }));
 
     if (!projects || projects.length === 0) {
         console.log('No projects found for user:', userId);
-        // throw new Error('No projects found for this user');
     }
 
-    return projects;
+    return transformedProjects;
 };
 
 
