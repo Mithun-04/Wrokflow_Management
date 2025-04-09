@@ -215,13 +215,13 @@ const CardLayout = ({ projectId = null }) => {
         </ul>
       </div>
 
-      <div style={cardStyle} gridArea="status">
+      {/* <div style={cardStyle} gridArea="status">
         <p>Teammates Status</p>
       </div>
 
       <div style={cardStyle} gridArea="updates">
         <p>Notes</p>
-      </div>
+      </div> */}
     </div>
   );
 };
